@@ -7,7 +7,7 @@
     return Math.floor(value / 1000) % 60;
   };
 
-  let timer = 5 * 60 * 1000; // 5 minutes in miliseconds;
+  let timer = 1000; // 5 minutes in miliseconds;
   let minutes = convertMilisecondsToMinutes(timer);
   let seconds = convertMilisecondsToSeconds(timer);
 
@@ -34,24 +34,47 @@
   startTimer();
 </script>
 
-<div>
-  <p>{minutesWithPadStart} : {secondsWithPadStart}</p>
-</div>
+<section>
+  <div>
+    <p class="timer">{minutesWithPadStart} : {secondsWithPadStart}</p>
+
+    <p class="timerEndReached">
+      {timer === 0 ? "You've reached the timer's end" : ""}
+    </p>
+  </div>
+</section>
 
 <style>
+  section {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    flex-direction: column;
+  }
   div {
     display: flex;
     justify-content: center;
+    flex-direction: column;
+    width: 100%;
   }
 
-  p {
+  p.timer {
     font-size: var(--font-large);
     color: var(--neutral);
   }
 
+  p.timerEndReached {
+    font-size: var(--font-xxsmall);
+    color: var(--neutral);
+  }
+
   @media (min-width: 768px) {
-    p {
+    p.timer {
       font-size: var(--font-xxlarge);
     }
+
+    p.timerEndReached {
+    font-size: var(--font-xsmall);
+  }
   }
 </style>
