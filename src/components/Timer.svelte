@@ -7,7 +7,9 @@
     return Math.floor(value / 1000) % 60;
   };
 
-  let timer = 1000; // 5 minutes in miliseconds;
+  const timerStartValue = 5 * 60 * 1000; // 5 minutes in miliseconds;
+
+  let timer = timerStartValue;
   let minutes = convertMilisecondsToMinutes(timer);
   let seconds = convertMilisecondsToSeconds(timer);
 
@@ -31,16 +33,29 @@
     }, 1000);
   };
 
+  const resetDefaultValues = () => {
+    timer = timerStartValue;
+    minutes = convertMilisecondsToMinutes(timer);
+    seconds = convertMilisecondsToSeconds(timer);
+
+    minutesWithPadStart = minutes.toString().padStart(2, "0");
+    secondsWithPadStart = seconds.toString().padStart(2, "0");
+  };
+
   startTimer();
 </script>
 
 <section>
-  <div>
-    <p class="timer">{minutesWithPadStart} : {secondsWithPadStart}</p>
+  <div class="timerContainer">
+    <p class="timerText">{minutesWithPadStart} : {secondsWithPadStart}</p>
 
-    <p class="timerEndReached">
-      {timer === 0 ? "You've reached the timer's end" : ""}
-    </p>
+    <div>
+      {#if timer <= 0}
+        <p class="timerEndReached">You've reached the timer's end</p>
+
+        <button on:click={resetDefaultValues}> Start Over </button>
+      {/if}
+    </div>
   </div>
 </section>
 
@@ -51,16 +66,17 @@
     align-items: center;
     flex-direction: column;
   }
-  div {
+  div.timerContainer {
     display: flex;
     justify-content: center;
     flex-direction: column;
     width: 100%;
   }
 
-  p.timer {
+  p.timerText {
     font-size: var(--font-large);
     color: var(--neutral);
+    margin: 0;
   }
 
   p.timerEndReached {
@@ -68,13 +84,27 @@
     color: var(--neutral);
   }
 
+  button {
+    font-size: var(--font-xxsmall);
+    color: var(--neutral);
+    background-color: var(--secondary);
+    border: none;
+    padding: 1em 2em;
+    border-radius: 5px;
+    cursor: pointer;
+  }
+
   @media (min-width: 768px) {
-    p.timer {
+    p.timerText {
       font-size: var(--font-xxlarge);
     }
 
     p.timerEndReached {
-    font-size: var(--font-xsmall);
-  }
+      font-size: var(--font-xsmall);
+    }
+
+    button {
+      font-size: var(--font-xsmall)
+    }
   }
 </style>
